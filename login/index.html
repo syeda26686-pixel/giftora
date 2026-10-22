@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gifts by AM - Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>GIFTS <span>BY AM</span></h1>
+        <p>LITTLE THINGS, LOVELY MEMORIES</p>
+    </header>
+
+    <div class="container">
+
+        <div id="login">
+            <h2>Sign in</h2>
+            <p class="subtitle">Sign in or create an account</p>
+
+            <button class="shop-btn" onclick="shopLogin()">
+                Continue with shop
+            </button>
+
+            <div class="separator">or</div>
+
+            <form onsubmit="login(event)">
+                <input type="email" id="loginEmail"
+                       placeholder="Email" required>
+
+                <input type="password" id="loginPassword"
+                       placeholder="Password" required>
+
+                <label class="check">
+                    <input type="checkbox"> Email me with news and offers
+                </label>
+
+                <button class="submit-btn" type="submit">
+                    Sign in →
+                </button>
+            </form>
+
+            <p class="switch">
+                New customer?
+                <a href="#" onclick="showSignup()">Create an account</a>
+            </p>
+        </div>
+
+        <div id="signup" style="display:none;">
+            <h2>Create account</h2>
+            <p class="subtitle">Join Gifts by AM</p>
+
+            <form onsubmit="signup(event)">
+                <input type="text" id="name"
+                       placeholder="Full name" required>
+
+                <input type="email" id="email"
+                       placeholder="Email" required>
+
+                <input type="password" id="password"
+                       placeholder="Password (min. 8 characters)"
+                       minlength="8" required>
+
+                <input type="password" id="confirm"
+                       placeholder="Confirm password" required>
+
+                <label class="check">
+                    <input type="checkbox"> Email me with news and offers
+                </label>
+
+                <button class="submit-btn" type="submit">
+                    Create account →
+                </button>
+            </form>
+
+            <p class="switch">
+                Already have an account?
+                <a href="#" onclick="showLogin()">Sign in</a>
+            </p>
+        </div>
+
+        <p id="message"></p>
+
+        <p class="terms">
+            By continuing, you agree to our
+            <a href="#">Terms of service</a>.
+        </p>
+    </div>
+
+    <footer>
+        <a href="#">Privacy policy</a>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+s
