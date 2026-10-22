@@ -1,0 +1,2387 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gifts by AM | Admin Dashboard</title>
+
+    <style>
+        :root {
+            --pink: #c94f7c;
+            --pink-dark: #b43e6b;
+            --pink-light: #fff0f6;
+            --pink-soft: #fbe1eb;
+            --bg: #fff8fb;
+            --white: #ffffff;
+            --text: #392833;
+            --muted: #8d7a85;
+            --border: #f0dce5;
+            --green: #24865b;
+            --orange: #b8791b;
+            --red: #c13c51;
+            --shadow: 0 5px 24px rgba(113, 52, 79, 0.06);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        button, input, select, textarea {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* LOGIN */
+
+        #loginScreen {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #fff0f6, #fffafd);
+        }
+
+        .login-card {
+            background: white;
+            width: 100%;
+            max-width: 420px;
+            padding: 38px;
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            box-shadow: var(--shadow);
+        }
+
+        .brand-mark {
+            width: 60px;
+            height: 60px;
+            display: grid;
+            place-items: center;
+            margin-bottom: 18px;
+            border-radius: 18px;
+            background: var(--pink-light);
+            color: var(--pink);
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .login-card h1 {
+            font-size: 26px;
+            margin-bottom: 8px;
+        }
+
+        .muted {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .field {
+            margin-top: 20px;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .field input, .field select, .field textarea {
+            width: 100%;
+            padding: 12px 13px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            outline: none;
+            background: #fff;
+            color: var(--text);
+        }
+
+        .field input:focus, .field select:focus,
+        .field textarea:focus {
+            border-color: var(--pink);
+        }
+
+        .primary-btn, .secondary-btn, .danger-btn {
+            border: 0;
+            border-radius: 9px;
+            padding: 11px 15px;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .primary-btn {
+            color: white;
+            background: var(--pink);
+        }
+
+        .primary-btn:hover {
+            background: var(--pink-dark);
+        }
+
+        .secondary-btn {
+            background: var(--pink-light);
+            color: var(--pink-dark);
+        }
+
+        .danger-btn {
+            background: #fff0f1;
+            color: var(--red);
+        }
+
+        .login-card .primary-btn {
+            width: 100%;
+            margin-top: 22px;
+            padding: 13px;
+        }
+
+        .error-message {
+            color: var(--red);
+            font-size: 13px;
+            margin-top: 12px;
+        }
+
+        /* APP LAYOUT */
+
+        #adminApp {
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: white;
+            border-right: 1px solid var(--border);
+            position: fixed;
+            inset: 0 auto 0 0;
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+            z-index: 20;
+            overflow-y: auto;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 4px 10px 28px;
+        }
+
+        .brand .brand-mark {
+            width: 46px;
+            height: 46px;
+            margin: 0;
+            border-radius: 14px;
+            font-size: 17px;
+        }
+
+        .brand h2 {
+            font-size: 16px;
+        }
+
+        .brand p {
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        .nav-heading {
+            font-size: 10px;
+            font-weight: 800;
+            color: #ad98a4;
+            letter-spacing: 1.4px;
+            padding: 12px 12px 9px;
+        }
+
+        .nav-item {
+            width: 100%;
+            border: 0;
+            background: transparent;
+            color: #786571;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 13px 12px;
+            margin-bottom: 5px;
+            border-radius: 10px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: var(--pink-light);
+            color: var(--pink-dark);
+        }
+
+        .nav-icon {
+            width: 22px;
+            text-align: center;
+            font-size: 17px;
+        }
+
+        .nav-count {
+            margin-left: auto;
+            font-size: 11px;
+            border-radius: 20px;
+            padding: 3px 7px;
+            background: #ffe0e9;
+            color: var(--pink-dark);
+        }
+
+        .sidebar-bottom {
+            margin-top: auto;
+            padding-top: 20px;
+        }
+
+        .sidebar-note {
+            padding: 14px;
+            background: var(--pink-light);
+            border-radius: 12px;
+            margin: 8px 4px 18px;
+        }
+
+        .sidebar-note strong {
+            font-size: 12px;
+        }
+
+        .sidebar-note p {
+            color: var(--muted);
+            font-size: 11px;
+            line-height: 1.5;
+            margin-top: 6px;
+        }
+
+        .main-area {
+            margin-left: 250px;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            height: 78px;
+            padding: 0 32px;
+            background: white;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .topbar h1 {
+            font-size: 20px;
+        }
+
+        .topbar p {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 5px;
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: white;
+            font-size: 17px;
+            position: relative;
+        }
+
+        .icon-btn:hover {
+            background: var(--pink-light);
+        }
+
+        .notification-dot {
+            width: 8px;
+            height: 8px;
+            position: absolute;
+            right: 7px;
+            top: 7px;
+            border-radius: 50%;
+            background: var(--pink);
+        }
+
+        .admin-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: 6px;
+        }
+
+        .avatar {
+            width: 39px;
+            height: 39px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: var(--pink-soft);
+            color: var(--pink-dark);
+            font-weight: 800;
+        }
+
+        .admin-profile strong {
+            font-size: 12px;
+        }
+
+        .admin-profile small {
+            display: block;
+            color: var(--muted);
+            font-size: 11px;
+            margin-top: 4px;
+        }
+
+        .content {
+            padding: 30px 32px 45px;
+            max-width: 1600px;
+            margin: auto;
+        }
+
+        .welcome-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 25px;
+        }
+
+        .welcome-row h2 {
+            font-size: 23px;
+            margin-bottom: 8px;
+        }
+
+        .welcome-row p {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 17px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            padding: 21px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+        }
+
+        .stat-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: var(--muted);
+            font-size: 12px;
+            gap: 8px;
+        }
+
+        .stat-icon {
+            width: 38px;
+            height: 38px;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            background: var(--pink-light);
+            color: var(--pink);
+            font-size: 18px;
+        }
+
+        .stat-card h3 {
+            margin-top: 17px;
+            font-size: 28px;
+            overflow-wrap: anywhere;
+        }
+
+        .stat-card p {
+            color: var(--muted);
+            font-size: 11px;
+            margin-top: 7px;
+        }
+
+        .panel {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            margin-bottom: 22px;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 19px 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .panel-header h3 {
+            font-size: 15px;
+        }
+
+        .panel-header p {
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 5px;
+        }
+
+        .panel-body {
+            padding: 21px;
+        }
+
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 22px;
+        }
+
+        .section-heading h2 {
+            font-size: 23px;
+        }
+
+        .section-heading p {
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 6px;
+        }
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+            margin-bottom: 17px;
+        }
+
+        .filters input, .filters select {
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            background: white;
+            border-radius: 9px;
+            outline: none;
+            min-width: 150px;
+        }
+
+        .table-wrap {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 720px;
+        }
+
+        th {
+            background: #fff8fb;
+            color: var(--muted);
+            font-size: 10px;
+            text-align: left;
+            letter-spacing: .6px;
+            text-transform: uppercase;
+            padding: 13px 15px;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 15px;
+            font-size: 12px;
+            border-bottom: 1px solid #f6eaf0;
+            vertical-align: middle;
+        }
+
+        tbody tr:hover {
+            background: #fffbfd;
+        }
+
+        .badge {
+            display: inline-block;
+            border-radius: 20px;
+            padding: 6px 9px;
+            background: #fff1dc;
+            color: var(--orange);
+            font-size: 10px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .badge.success {
+            background: #e6f7ee;
+            color: var(--green);
+        }
+
+        .badge.danger {
+            background: #ffeaed;
+            color: var(--red);
+        }
+
+        .badge.pink {
+            background: var(--pink-light);
+            color: var(--pink-dark);
+        }
+
+        .table-actions {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .small-btn {
+            border: 1px solid var(--border);
+            background: white;
+            color: var(--text);
+            padding: 7px 9px;
+            border-radius: 7px;
+            font-size: 11px;
+        }
+
+        .small-btn:hover {
+            border-color: var(--pink);
+            color: var(--pink-dark);
+        }
+
+        .empty-state {
+            padding: 35px 15px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .empty-state strong {
+            display: block;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .quick-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .quick-link {
+            border: 1px solid var(--border);
+            background: #fffafd;
+            border-radius: 12px;
+            padding: 17px;
+            text-align: left;
+            width: 100%;
+        }
+
+        .quick-link strong {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 13px;
+        }
+
+        .quick-link span {
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        /* NOTIFICATION POPOVER */
+
+        .popover-wrap {
+            position: relative;
+        }
+
+        .popover {
+            position: absolute;
+            right: 0;
+            top: 50px;
+            width: 350px;
+            max-width: calc(100vw - 30px);
+            background: white;
+            border: 1px solid var(--border);
+            box-shadow: 0 12px 35px #55304420;
+            border-radius: 14px;
+            padding: 16px;
+            z-index: 30;
+        }
+
+        .popover h3 {
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .notification-item {
+            padding: 12px;
+            margin-bottom: 8px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: white;
+            font-size: 12px;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+        }
+
+        .notification-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .notification-item.unread {
+            background: var(--pink-light);
+            border-color: var(--pink-soft);
+        }
+
+        .notification-item small {
+            display: block;
+            color: var(--muted);
+            margin-top: 5px;
+        }
+
+        .notification-item .notification-actions {
+            margin-top: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .notification-item .small-btn {
+            font-size: 10px;
+            padding: 6px 8px;
+        }
+
+        .notification-heading-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .unread-label {
+            display: inline-block;
+            color: var(--pink-dark);
+            background: white;
+            border-radius: 20px;
+            padding: 3px 7px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        /* MODALS */
+
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: #29152070;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 18px;
+            z-index: 100;
+            overflow-y: auto;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 17px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 92vh;
+            overflow-y: auto;
+            padding: 25px;
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h3 {
+            font-size: 18px;
+        }
+
+        .close-btn {
+            border: 0;
+            background: var(--pink-light);
+            color: var(--pink-dark);
+            border-radius: 9px;
+            width: 34px;
+            height: 34px;
+            font-size: 20px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0 15px;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 22px;
+        }
+
+        .notice {
+            background: var(--pink-light);
+            color: var(--pink-dark);
+            padding: 12px 14px;
+            border-radius: 9px;
+            font-size: 12px;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .toast {
+            position: fixed;
+            right: 22px;
+            bottom: 22px;
+            max-width: 360px;
+            background: #34212c;
+            color: white;
+            border-radius: 11px;
+            padding: 14px 18px;
+            font-size: 13px;
+            z-index: 200;
+            box-shadow: var(--shadow);
+        }
+
+        .mobile-menu {
+            display: none;
+        }
+
+        @media (max-width: 1100px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .content {
+                padding: 24px 20px;
+            }
+
+            .topbar {
+                padding: 0 20px;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform .2s ease;
+                box-shadow: none;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+                box-shadow: 0 0 0 100vmax #29152050;
+            }
+
+            .main-area {
+                margin-left: 0;
+            }
+
+            .mobile-menu {
+                display: inline-grid;
+                place-items: center;
+            }
+
+            .topbar {
+                height: 70px;
+                padding: 0 13px;
+            }
+
+            .topbar h1 {
+                font-size: 16px;
+            }
+
+            .topbar p, .admin-profile .profile-text {
+                display: none;
+            }
+
+            .top-actions {
+                gap: 6px;
+            }
+
+            .icon-btn {
+                width: 36px;
+                height: 36px;
+            }
+
+            .content {
+                padding: 22px 13px;
+            }
+
+            .stats-grid {
+                gap: 10px;
+            }
+
+            .stat-card {
+                padding: 15px;
+            }
+
+            .stat-card h3 {
+                font-size: 23px;
+            }
+
+            .welcome-row {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .quick-grid, .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .panel-header, .panel-body {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ADMIN LOGIN -->
+    <section id="loginScreen">
+        <form id="loginForm" class="login-card">
+            <div class="brand-mark">AM</div>
+            <h1>Welcome back!</h1>
+            <p class="muted">Sign in to manage your Gifts by AM store.</p>
+
+            <div class="field">
+                <label for="adminPassword">Admin password</label>
+                <input
+                    id="adminPassword"
+                    type="password"
+                    autocomplete="current-password"
+                    placeholder="Enter your admin password"
+                    required
+                >
+            </div>
+
+            <button class="primary-btn" type="submit" id="loginButton">
+                Login to Dashboard
+            </button>
+
+            <p id="loginError" class="error-message"></p>
+        </form>
+    </section>
+
+    <!-- ADMIN APP -->
+    <div id="adminApp" class="hidden">
+
+        <aside class="sidebar" id="sidebar">
+            <div class="brand">
+                <div class="brand-mark">AM</div>
+                <div>
+                    <h2>Gifts by AM</h2>
+                    <p>Store Management</p>
+                </div>
+            </div>
+
+            <div class="nav-heading">MAIN MENU</div>
+
+            <button class="nav-item active" data-page="dashboard">
+                <span class="nav-icon">⌂</span> Dashboard
+            </button>
+
+            <button class="nav-item" data-page="orders">
+                <span class="nav-icon">▤</span> Orders
+                <span class="nav-count hidden" id="pendingOrdersCount">0</span>
+            </button>
+
+            <button class="nav-item" data-page="products">
+                <span class="nav-icon">◇</span> Products
+            </button>
+
+            <button class="nav-item" data-page="customers">
+                <span class="nav-icon">♙</span> Customers
+            </button>
+
+            <button class="nav-item" data-page="customized">
+                <span class="nav-icon">✿</span> Customized Orders
+                <span class="nav-count hidden" id="customCount">0</span>
+            </button>
+
+            <div class="nav-heading">STORE</div>
+
+            <button class="nav-item" data-page="payments">
+                <span class="nav-icon">▣</span> Payment Verification
+                <span class="nav-count hidden" id="paymentCount">0</span>
+            </button>
+
+            <button class="nav-item" data-page="settings">
+                <span class="nav-icon">⚙</span> Settings
+            </button>
+
+            <div class="sidebar-bottom">
+                <div class="sidebar-note">
+                    <strong>Your gifting store, one place.</strong>
+                    <p>Manage orders, payments and customer requests from your admin panel.</p>
+                </div>
+                <button class="nav-item" id="logoutButton">
+                    <span class="nav-icon">↪</span> Logout
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-area">
+            <header class="topbar">
+                <div style="display:flex;align-items:center;gap:12px">
+                    <button class="icon-btn mobile-menu" id="mobileMenu" aria-label="Open menu">☰</button>
+                    <div>
+                        <h1 id="pageTitle">Dashboard</h1>
+                        <p>Welcome to your store management panel</p>
+                    </div>
+                </div>
+
+                <div class="top-actions">
+                    <div class="popover-wrap">
+                        <button class="icon-btn" id="emailButton" title="Email">✉</button>
+                        <div id="emailPopover" class="popover hidden">
+                            <h3>Email & Messages</h3>
+                            <p class="muted">
+                                Email sending is not connected yet. You can add an email service
+                                in the backend to send quotations and customer updates.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="popover-wrap">
+                        <button class="icon-btn" id="notificationButton" title="Notifications"
+                            aria-label="Open notifications" aria-expanded="false">
+                            ♧
+                            <span class="notification-dot hidden" id="notificationDot"></span>
+                        </button>
+                        <div id="notificationPopover" class="popover hidden">
+                            <div class="notification-heading-row">
+                                <h3>Notifications</h3>
+                                <span class="unread-label" id="unreadCountLabel">0 unread</span>
+                            </div>
+                            <div id="notificationList">
+                                <p class="muted">Loading notifications...</p>
+                            </div>
+                            <button class="secondary-btn" id="refreshNotifications" type="button"
+                                style="margin-top:12px">
+                                Refresh
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="admin-profile">
+                        <div class="avatar">AM</div>
+                        <div class="profile-text">
+                            <strong>Store Admin</strong>
+                            <small>Administrator</small>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content">
+
+                <!-- DASHBOARD -->
+                <section class="page-section" id="page-dashboard">
+                    <div class="welcome-row">
+                        <div>
+                            <h2>Good to see you! 💗</h2>
+                            <p>Here's what's happening with your store today.</p>
+                        </div>
+                        <button class="primary-btn" data-go="orders">View All Orders →</button>
+                    </div>
+
+                    <div class="stats-grid">
+                        <article class="stat-card">
+                            <div class="stat-top">
+                                Total Orders
+                                <span class="stat-icon">▤</span>
+                            </div>
+                            <h3 id="statTotalOrders">—</h3>
+                            <p>All recorded orders</p>
+                        </article>
+
+                        <article class="stat-card">
+                            <div class="stat-top">
+                                Pending Orders
+                                <span class="stat-icon">◷</span>
+                            </div>
+                            <h3 id="statPendingOrders">—</h3>
+                            <p>Awaiting progress</p>
+                        </article>
+
+                        <article class="stat-card">
+                            <div class="stat-top">
+                                Delivered Orders
+                                <span class="stat-icon">✓</span>
+                            </div>
+                            <h3 id="statDeliveredOrders">—</h3>
+                            <p>Successfully delivered</p>
+                        </article>
+
+                        <article class="stat-card">
+                            <div class="stat-top">
+                                Total Sales
+                                <span class="stat-icon">₨</span>
+                            </div>
+                            <h3 id="statTotalSales">—</h3>
+                            <p>Recorded order value</p>
+                        </article>
+                    </div>
+
+                    <div class="quick-grid">
+                        <div class="panel">
+                            <div class="panel-header">
+                                <div>
+                                    <h3>Recent Orders</h3>
+                                    <p>Your latest customer orders</p>
+                                </div>
+                                <button class="secondary-btn" data-go="orders">View all</button>
+                            </div>
+                            <div class="table-wrap">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Order</th>
+                                            <th>Customer</th>
+                                            <th>Amount</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="recentOrdersBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="panel">
+                            <div class="panel-header">
+                                <div>
+                                    <h3>Quick Actions</h3>
+                                    <p>Manage your store faster</p>
+                                </div>
+                            </div>
+                            <div class="panel-body" style="display:grid;gap:10px">
+                                <button class="quick-link" data-go="orders">
+                                    <strong>▤ Manage Orders</strong>
+                                    <span>View orders and update their statuses</span>
+                                </button>
+                                <button class="quick-link" data-go="payments">
+                                    <strong>▣ Verify Payments</strong>
+                                    <span>Review payment statuses and receipts</span>
+                                </button>
+                                <button class="quick-link" data-go="customized">
+                                    <strong>✿ Custom Requests</strong>
+                                    <span>Review customers' gifting requirements</span>
+                                </button>
+                                <button class="quick-link" data-go="products">
+                                    <strong>◇ Manage Products</strong>
+                                    <span>Open product management</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ORDERS -->
+                <section class="page-section hidden" id="page-orders">
+                    <div class="section-heading">
+                        <div>
+                            <h2>All Orders</h2>
+                            <p>Review orders and update payment and delivery status.</p>
+                        </div>
+                        <button class="secondary-btn" id="refreshOrders">↻ Refresh Orders</button>
+                    </div>
+
+                    <div class="filters">
+                        <input id="orderSearch" placeholder="Search order or customer...">
+                        <select id="orderStatusFilter">
+                            <option value="">All delivery statuses</option>
+                            <option>Pending</option>
+                            <option>Order Confirmed</option>
+                            <option>Packed</option>
+                            <option>Out for Delivery</option>
+                            <option>Delivered</option>
+                        </select>
+                        <select id="orderPaymentFilter">
+                            <option value="">All payment statuses</option>
+                            <option>Pending</option>
+                            <option>Verified</option>
+                            <option>Rejected</option>
+                        </select>
+                    </div>
+
+                    <div class="panel">
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Order Number</th>
+                                        <th>Customer</th>
+                                        <th>Amount</th>
+                                        <th>Payment</th>
+                                        <th>Delivery</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ordersTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PRODUCTS -->
+                <section class="page-section hidden" id="page-products">
+                    <div class="section-heading">
+                        <div>
+                            <h2>Products</h2>
+                            <p>Manage the products available in your shop.</p>
+                        </div>
+                        <button class="primary-btn" id="addProductButton">+ Add Product</button>
+                    </div>
+
+                    <div class="notice">
+                        Product add/edit/delete requires matching product-management API routes and a products table.
+                        This panel will show saved products when those routes are connected.
+                    </div>
+
+                    <div class="panel">
+                        <div class="panel-header">
+                            <div>
+                                <h3>Product Catalogue</h3>
+                                <p>Products returned by your backend</p>
+                            </div>
+                            <button class="secondary-btn" id="refreshProducts">↻ Refresh</button>
+                        </div>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Category</th>
+                                        <th>Price</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="productsTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- CUSTOMERS -->
+                <section class="page-section hidden" id="page-customers">
+                    <div class="section-heading">
+                        <div>
+                            <h2>Customers</h2>
+                            <p>View saved customer accounts and contact details.</p>
+                        </div>
+                        <button class="secondary-btn" id="refreshCustomers">↻ Refresh</button>
+                    </div>
+
+                    <div class="notice">
+                        Customer records will appear here when your website registration/login system saves
+                        customer accounts and the customer-list API is connected. Admin logins are not customer accounts.
+                    </div>
+
+                    <div class="panel">
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Customer</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Registered</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="customersTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- CUSTOMIZED ORDERS -->
+                <section class="page-section hidden" id="page-customized">
+                    <div class="section-heading">
+                        <div>
+                            <h2>Customized Orders</h2>
+                            <p>Customer requests, reference images, budgets and quotations.</p>
+                        </div>
+                        <button class="secondary-btn" id="refreshCustomRequests">↻ Refresh</button>
+                    </div>
+
+                    <div class="notice">
+                        Customized requests require a backend endpoint and database table. Once connected,
+                        requests will appear here separately from regular orders, and admin quotations can be sent to customers.
+                    </div>
+
+                    <div class="panel">
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Request</th>
+                                        <th>Customer</th>
+                                        <th>Budget</th>
+                                        <th>Delivery Days</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="customTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PAYMENT VERIFICATION -->
+                <section class="page-section hidden" id="page-payments">
+                    <div class="section-heading">
+                        <div>
+                            <h2>Payment Verification</h2>
+                            <p>Review payment statuses for customer orders.</p>
+                        </div>
+                        <button class="secondary-btn" id="refreshPayments">↻ Refresh</button>
+                    </div>
+
+                    <div class="notice">
+                        Use the Verify or Reject actions for orders. Payment receipts uploaded by customers
+                        can be opened from the order details if available.
+                    </div>
+
+                    <div class="panel">
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Order Number</th>
+                                        <th>Customer</th>
+                                        <th>Payment Method</th>
+                                        <th>Amount</th>
+                                        <th>Payment Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="paymentsTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SETTINGS -->
+                <section class="page-section hidden" id="page-settings">
+                    <div class="section-heading">
+                        <div>
+                            <h2>Settings</h2>
+                            <p>Admin panel information and system status.</p>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h3>Store Information</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="field" style="margin-top:0">
+                                <label>Store name</label>
+                                <input value="Gifts by AM" readonly>
+                            </div>
+                            <div class="field">
+                                <label>Store location</label>
+                                <input value="Karachi, Pakistan" readonly>
+                            </div>
+                            <div class="field">
+                                <label>Currency</label>
+                                <input value="PKR (₨)" readonly>
+                            </div>
+                            <div class="field">
+                                <label>Backend status</label>
+                                <input id="backendStatus" value="Checking..." readonly>
+                            </div>
+                            <p class="muted" style="margin-top:15px">
+                                Password and environment settings should be changed in your secure server configuration,
+                                not stored in this page.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- PRODUCT MODAL -->
+    <div id="productModal" class="modal-backdrop hidden">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="productModalTitle">Add Product</h3>
+                <button class="close-btn" data-close="productModal">×</button>
+            </div>
+
+            <form id="productForm">
+                <input type="hidden" id="productId">
+
+                <div class="notice">
+                    This form is ready for the product API. Saving will only work after
+                    the backend product routes are implemented.
+                </div>
+
+                <div class="form-grid">
+                    <div class="field">
+                        <label for="productName">Product name</label>
+                        <input id="productName" required>
+                    </div>
+
+                    <div class="field">
+                        <label for="productPrice">Price (PKR)</label>
+                        <input id="productPrice" type="number" min="1" required>
+                    </div>
+
+                    <div class="field">
+                        <label for="productCategory">Category</label>
+                        <input id="productCategory" placeholder="Gift boxes, bouquets...">
+                    </div>
+
+                    <div class="field">
+                        <label for="productImage">Image URL or path</label>
+                        <input id="productImage" placeholder="images/product.jpg">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="productDescription">Description</label>
+                    <textarea id="productDescription" rows="3"></textarea>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="secondary-btn" data-close="productModal">Cancel</button>
+                    <button type="submit" class="primary-btn">Save Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ORDER DETAILS MODAL -->
+    <div id="orderModal" class="modal-backdrop hidden">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Order Details</h3>
+                <button class="close-btn" data-close="orderModal">×</button>
+            </div>
+            <div id="orderDetailsContent"></div>
+        </div>
+    </div>
+
+    <!-- CUSTOM QUOTATION MODAL -->
+    <div id="quotationModal" class="modal-backdrop hidden">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Send Quotation</h3>
+                <button class="close-btn" data-close="quotationModal">×</button>
+            </div>
+
+            <form id="quotationForm">
+                <input type="hidden" id="quotationRequestId">
+
+                <div class="notice">
+                    The quotation workflow needs a matching backend endpoint and a customer approval page
+                    before quotations can be sent and accepted end-to-end.
+                </div>
+
+                <div class="field">
+                    <label for="quotationAmount">Quoted price (PKR)</label>
+                    <input id="quotationAmount" type="number" min="1" required>
+                </div>
+
+                <div class="field">
+                    <label for="quotationDays">Estimated delivery days</label>
+                    <input id="quotationDays" type="number" min="1" required>
+                </div>
+
+                <div class="field">
+                    <label for="quotationNotes">Message / details</label>
+                    <textarea id="quotationNotes" rows="4" required></textarea>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="secondary-btn" data-close="quotationModal">Cancel</button>
+                    <button type="submit" class="primary-btn">Submit Quotation</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="toast" class="toast hidden" role="status"></div>
+
+    <script>
+        "use strict";
+
+        const $ = (id) => document.getElementById(id);
+
+        const state = {
+            orders: [],
+            summary: {},
+            products: [],
+            customers: [],
+            customRequests: [],
+            notifications: [],
+            unreadCount: 0,
+            currentPage: "dashboard",
+            toastTimer: null,
+            notificationTimer: null
+        };
+
+        const ORDER_STATUSES = [
+            "Pending",
+            "Order Confirmed",
+            "Packed",
+            "Out for Delivery",
+            "Delivered"
+        ];
+
+        const PAYMENT_STATUSES = ["Pending", "Verified", "Rejected"];
+
+        async function apiRequest(url, options = {}) {
+            let response;
+
+            try {
+                response = await fetch(url, {
+                    credentials: "same-origin",
+                    ...options,
+                    headers: {
+                        ...(options.body ? { "Content-Type": "application/json" } : {}),
+                        ...(options.headers || {})
+                    }
+                });
+            } catch (error) {
+                throw new Error(
+                    "Could not connect to the server. Make sure node server.js is running."
+                );
+            }
+
+            const contentType = response.headers.get("content-type") || "";
+            let data = {};
+
+            if (contentType.includes("application/json")) {
+                data = await response.json();
+            } else {
+                const message = await response.text();
+                data = { message };
+            }
+
+            if (response.status === 401 || response.status === 403) {
+                showLogin();
+                throw new Error(data.message || "Please log in again.");
+            }
+
+            if (!response.ok) {
+                throw new Error(data.message || data.error || "Request failed.");
+            }
+
+            return data;
+        }
+
+        function escapeHTML(value) {
+            return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;"
+            })[char]);
+        }
+
+        function money(value) {
+            return "₨ " + Number(value || 0).toLocaleString("en-PK");
+        }
+
+        function orderNumberValue(order) {
+            return String(order.order_number ?? order.orderNumber ?? order.id ?? "");
+        }
+
+        function orderStatusValue(order) {
+            return order.order_status ?? order.orderStatus ?? "Pending";
+        }
+
+        function paymentStatusValue(order) {
+            return order.payment_status ?? order.paymentStatus ?? "Pending";
+        }
+
+        function badgeClass(status) {
+            const s = String(status || "").toLowerCase();
+
+            if (["verified", "delivered", "approved", "completed"].includes(s)) {
+                return "badge success";
+            }
+
+            if (["rejected", "cancelled", "failed"].includes(s)) {
+                return "badge danger";
+            }
+
+            if (["order confirmed", "packed", "out for delivery", "quotation sent"].includes(s)) {
+                return "badge pink";
+            }
+
+            return "badge";
+        }
+
+        function showToast(message) {
+            const toast = $("toast");
+            toast.textContent = message;
+            toast.classList.remove("hidden");
+
+            clearTimeout(state.toastTimer);
+            state.toastTimer = setTimeout(() => {
+                toast.classList.add("hidden");
+            }, 4000);
+        }
+
+        function showLogin() {
+            $("adminApp").classList.add("hidden");
+            $("loginScreen").classList.remove("hidden");
+
+            // Stop background polling after the session ends.
+            if (state.notificationTimer) {
+                clearInterval(state.notificationTimer);
+                state.notificationTimer = null;
+            }
+
+            $("notificationPopover").classList.add("hidden");
+            $("loginError").textContent = "";
+        }
+
+        function showApp() {
+            $("loginScreen").classList.add("hidden");
+            $("adminApp").classList.remove("hidden");
+            startNotificationPolling();
+        }
+
+        async function checkSession() {
+            try {
+                const result = await apiRequest("/api/admin/session");
+
+                if (result.loggedIn) {
+                    showApp();
+                    await loadDashboardData();
+                } else {
+                    showLogin();
+                }
+            } catch (error) {
+                showLogin();
+                $("loginError").textContent = error.message;
+            }
+        }
+
+        $("loginForm").addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const button = $("loginButton");
+            button.disabled = true;
+            button.textContent = "Signing in...";
+            $("loginError").textContent = "";
+
+            try {
+                await apiRequest("/api/admin/login", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        password: $("adminPassword").value
+                    })
+                });
+
+                $("adminPassword").value = "";
+                showApp();
+                showToast("Welcome back to Gifts by AM!");
+                await loadDashboardData();
+            } catch (error) {
+                $("loginError").textContent = error.message;
+            } finally {
+                button.disabled = false;
+                button.textContent = "Login to Dashboard";
+            }
+        });
+
+        $("logoutButton").addEventListener("click", async () => {
+            try {
+                await apiRequest("/api/admin/logout", { method: "POST" });
+            } catch (error) {
+                console.warn("Logout request:", error.message);
+            }
+
+            showLogin();
+            showToast("You have been logged out.");
+        });
+
+        function navigate(page) {
+            state.currentPage = page;
+
+            document.querySelectorAll(".page-section").forEach(section => {
+                section.classList.add("hidden");
+            });
+
+            const target = $("page-" + page);
+            if (target) target.classList.remove("hidden");
+
+            document.querySelectorAll(".nav-item[data-page]").forEach(button => {
+                button.classList.toggle("active", button.dataset.page === page);
+            });
+
+            const titles = {
+                dashboard: "Dashboard",
+                orders: "Orders",
+                products: "Products",
+                customers: "Customers",
+                customized: "Customized Orders",
+                payments: "Payment Verification",
+                settings: "Settings"
+            };
+
+            $("pageTitle").textContent = titles[page] || "Dashboard";
+            $("sidebar").classList.remove("open");
+
+            if (page === "orders") renderOrders();
+            if (page === "payments") renderPayments();
+            if (page === "products") loadProducts();
+            if (page === "customers") loadCustomers();
+            if (page === "customized") loadCustomRequests();
+            if (page === "dashboard") renderDashboard();
+        }
+
+        document.querySelectorAll("[data-page]").forEach(button => {
+            button.addEventListener("click", () => navigate(button.dataset.page));
+        });
+
+        document.querySelectorAll("[data-go]").forEach(button => {
+            button.addEventListener("click", () => navigate(button.dataset.go));
+        });
+
+        $("mobileMenu").addEventListener("click", () => {
+            $("sidebar").classList.toggle("open");
+        });
+
+        $("emailButton").addEventListener("click", () => {
+            $("emailPopover").classList.toggle("hidden");
+            $("notificationPopover").classList.add("hidden");
+        });
+
+        $("notificationButton").addEventListener("click", async () => {
+            const popover = $("notificationPopover");
+            const willOpen = popover.classList.contains("hidden");
+
+            popover.classList.toggle("hidden");
+            $("emailPopover").classList.add("hidden");
+            $("notificationButton").setAttribute("aria-expanded", String(willOpen));
+
+            if (willOpen) {
+                await loadNotifications();
+            }
+        });
+
+        document.addEventListener("click", (event) => {
+            if (!event.target.closest("#emailButton") &&
+                !event.target.closest("#emailPopover")) {
+                $("emailPopover").classList.add("hidden");
+            }
+
+            if (!event.target.closest("#notificationButton") &&
+                !event.target.closest("#notificationPopover")) {
+                $("notificationPopover").classList.add("hidden");
+                $("notificationButton").setAttribute("aria-expanded", "false");
+            }
+        });
+
+        $("refreshNotifications").addEventListener("click", () => {
+            loadNotifications(true);
+        });
+
+        async function loadDashboardData() {
+            $("backendStatus").value = "Connected";
+
+            try {
+                const result = await apiRequest("/api/admin/orders");
+                state.orders = Array.isArray(result.orders) ? result.orders : [];
+                state.summary = result.summary || {};
+                renderDashboard();
+                renderOrders();
+                renderPayments();
+                updateSidebarCounts();
+            } catch (error) {
+                $("backendStatus").value = "Connection issue";
+                showToast(error.message);
+            }
+
+            await loadNotifications(false);
+        }
+
+        function renderDashboard() {
+            const orders = state.orders;
+            const summary = state.summary;
+
+            $("statTotalOrders").textContent =
+                Number(summary.totalOrders ?? orders.length).toLocaleString();
+
+            $("statPendingOrders").textContent =
+                Number(summary.pendingOrders ??
+                    orders.filter(o => orderStatusValue(o) === "Pending").length
+                ).toLocaleString();
+
+            $("statDeliveredOrders").textContent =
+                Number(summary.deliveredOrders ??
+                    orders.filter(o => orderStatusValue(o) === "Delivered").length
+                ).toLocaleString();
+
+            $("statTotalSales").textContent =
+                money(summary.totalSales ??
+                    orders.reduce((sum, o) => sum + Number(o.total_amount || 0), 0)
+                );
+
+            const recent = [...orders].slice(0, 5);
+            $("recentOrdersBody").innerHTML = recent.length
+                ? recent.map(order => `
+                    <tr>
+                        <td><strong>${escapeHTML(orderNumberValue(order))}</strong></td>
+                        <td>${escapeHTML(order.customer_name ?? order.customerName ?? "—")}</td>
+                        <td>${money(order.total_amount ?? order.totalAmount)}</td>
+                        <td><span class="${badgeClass(orderStatusValue(order))}">
+                            ${escapeHTML(orderStatusValue(order))}
+                        </span></td>
+                    </tr>
+                `).join("")
+                : `<tr><td colspan="4">
+                    <div class="empty-state"><strong>No orders yet</strong>New orders will appear here.</div>
+                </td></tr>`;
+        }
+
+        function updateSidebarCounts() {
+            const pendingOrders = state.orders.filter(o =>
+                orderStatusValue(o) === "Pending"
+            ).length;
+
+            const pendingPayments = state.orders.filter(o =>
+                paymentStatusValue(o) === "Pending"
+            ).length;
+
+            setCount("pendingOrdersCount", pendingOrders);
+            setCount("paymentCount", pendingPayments);
+            setCount("customCount", state.customRequests.length);
+        }
+
+        function setCount(id, count) {
+            const el = $(id);
+            el.textContent = count;
+            el.classList.toggle("hidden", !count);
+        }
+
+        function renderOrders() {
+            const search = $("orderSearch").value.trim().toLowerCase();
+            const deliveryFilter = $("orderStatusFilter").value;
+            const paymentFilter = $("orderPaymentFilter").value;
+
+            const filtered = state.orders.filter(order => {
+                const number = orderNumberValue(order).toLowerCase();
+                const customer = String(order.customer_name ?? order.customerName ?? "").toLowerCase();
+
+                return (!search || number.includes(search) || customer.includes(search)) &&
+                    (!deliveryFilter || orderStatusValue(order) === deliveryFilter) &&
+                    (!paymentFilter || paymentStatusValue(order) === paymentFilter);
+            });
+
+            $("ordersTableBody").innerHTML = filtered.length
+                ? filtered.map(order => {
+                    const number = orderNumberValue(order);
+                    const payment = paymentStatusValue(order);
+                    const delivery = orderStatusValue(order);
+
+                    return `
+                        <tr>
+                            <td><strong>${escapeHTML(number)}</strong><br>
+                                <span class="muted">${escapeHTML(order.created_at ?? "")}</span>
+                            </td>
+                            <td>${escapeHTML(order.customer_name ?? order.customerName ?? "—")}<br>
+                                <span class="muted">${escapeHTML(order.phone ?? "")}</span>
+                            </td>
+                            <td>${money(order.total_amount ?? order.totalAmount)}</td>
+                            <td><span class="${badgeClass(payment)}">${escapeHTML(payment)}</span></td>
+                            <td>
+                                <select aria-label="Delivery status for ${escapeHTML(number)}"
+                                    onchange="updateDeliveryStatus('${escapeHTML(number)}', this.value)"
+                                    style="max-width:165px;padding:8px;border:1px solid var(--border);border-radius:8px">
+                                    ${ORDER_STATUSES.map(s =>
+                                        `<option value="${escapeHTML(s)}" ${s === delivery ? "selected" : ""}>${escapeHTML(s)}</option>`
+                                    ).join("")}
+                                </select>
+                            </td>
+                            <td>
+                                <div class="table-actions">
+                                    <button class="small-btn" onclick="viewOrder('${escapeHTML(number)}')">Details</button>
+                                    ${payment === "Pending" ? `
+                                        <button class="small-btn" onclick="updatePaymentStatus('${escapeHTML(number)}','Verified')">Verify</button>
+                                        <button class="small-btn" onclick="updatePaymentStatus('${escapeHTML(number)}','Rejected')">Reject</button>
+                                    ` : ""}
+                                </div>
+                            </td>
+                        </tr>`;
+                }).join("")
+                : `<tr><td colspan="6"><div class="empty-state"><strong>No matching orders</strong>Try changing your filters.</div></td></tr>`;
+        }
+
+        async function updateDeliveryStatus(orderNumber, status) {
+            try {
+                const result = await apiRequest("/api/admin/order-status", {
+                    method: "POST",
+                    body: JSON.stringify({ orderNumber, status })
+                });
+
+                showToast(result.message || "Delivery status updated.");
+                await loadDashboardData();
+            } catch (error) {
+                showToast("Could not update delivery status: " + error.message);
+                await loadDashboardData();
+            }
+        }
+
+        async function updatePaymentStatus(orderNumber, paymentStatus) {
+            if (!["Verified", "Rejected"].includes(paymentStatus)) {
+                showToast("Select Verify or Reject.");
+                return;
+            }
+
+            const action = paymentStatus === "Verified" ? "verify" : "reject";
+            if (!confirm(`Are you sure you want to ${action} payment for ${orderNumber}?`)) {
+                return;
+            }
+
+            try {
+                const result = await apiRequest("/api/admin/payment-status", {
+                    method: "POST",
+                    body: JSON.stringify({ orderNumber, paymentStatus })
+                });
+
+                showToast(result.message || "Payment status updated.");
+                await loadDashboardData();
+            } catch (error) {
+                showToast("Could not update payment status: " + error.message);
+            }
+        }
+
+        async function viewOrder(orderNumber) {
+            $("orderDetailsContent").innerHTML =
+                `<p class="muted">Loading order details...</p>`;
+            $("orderModal").classList.remove("hidden");
+
+            try {
+                const result = await apiRequest(
+                    "/api/admin/order-details/" + encodeURIComponent(orderNumber)
+                );
+
+                const order = result.order || {};
+                const items = Array.isArray(result.items) ? result.items : [];
+                const receipts = Array.isArray(result.receipts) ? result.receipts : [];
+
+                $("orderDetailsContent").innerHTML = `
+                    <div class="notice">
+                        <strong>${escapeHTML(order.order_number || orderNumber)}</strong><br>
+                        ${escapeHTML(order.customer_name || "Customer")}
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="field"><label>Phone</label><p>${escapeHTML(order.phone || "—")}</p></div>
+                        <div class="field"><label>Email</label><p>${escapeHTML(order.email || "—")}</p></div>
+                        <div class="field"><label>Payment method</label><p>${escapeHTML(order.payment_method || "—")}</p></div>
+                        <div class="field"><label>Payment status</label><p><span class="${badgeClass(order.payment_status)}">${escapeHTML(order.payment_status || "Pending")}</span></p></div>
+                        <div class="field"><label>Delivery status</label><p><span class="${badgeClass(order.order_status)}">${escapeHTML(order.order_status || "Pending")}</span></p></div>
+                        <div class="field"><label>Total</label><p><strong>${money(order.total_amount)}</strong></p></div>
+                    </div>
+
+                    <div class="field"><label>Delivery address</label><p>${escapeHTML(order.address || "—")}, ${escapeHTML(order.city || "")}</p></div>
+                    <div class="field"><label>Order notes</label><p>${escapeHTML(order.order_notes || "—")}</p></div>
+
+                    <div class="panel" style="margin-top:20px">
+                        <div class="panel-header"><h3>Ordered Products</h3></div>
+                        <div class="table-wrap">
+                            <table>
+                                <thead><tr><th>Product</th><th>Qty</th><th>Unit price</th><th>Total</th></tr></thead>
+                                <tbody>
+                                    ${items.length ? items.map(item => `
+                                        <tr>
+                                            <td>${escapeHTML(item.product_name)}</td>
+                                            <td>${escapeHTML(item.quantity)}</td>
+                                            <td>${money(item.unit_price)}</td>
+                                            <td>${money(item.line_total)}</td>
+                                        </tr>
+                                    `).join("") : `<tr><td colspan="4">No items found.</td></tr>`}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label>Payment Receipts</label>
+                        ${receipts.length ? receipts.map(receipt => `
+                            <p style="margin-top:8px">
+                                <a href="/api/admin/payment-receipts/${Number(receipt.id)}"
+                                    target="_blank" rel="noopener">
+                                    ${escapeHTML(receipt.file_name || "View receipt")}
+                                </a>
+                            </p>
+                        `).join("") : `<p class="muted">No payment receipt is available for this order.</p>`}
+                    </div>
+
+                    <div class="modal-actions">
+                        <button class="secondary-btn" onclick="closeModal('orderModal')">Close</button>
+                    </div>
+                `;
+            } catch (error) {
+                $("orderDetailsContent").innerHTML =
+                    `<p class="error-message">${escapeHTML(error.message)}</p>`;
+            }
+        }
+
+        function renderPayments() {
+            $("paymentsTableBody").innerHTML = state.orders.length
+                ? state.orders.map(order => {
+                    const number = orderNumberValue(order);
+                    const status = paymentStatusValue(order);
+
+                    return `
+                        <tr>
+                            <td><strong>${escapeHTML(number)}</strong></td>
+                            <td>${escapeHTML(order.customer_name ?? order.customerName ?? "—")}</td>
+                            <td>${escapeHTML(order.payment_method ?? "—")}</td>
+                            <td>${money(order.total_amount ?? order.totalAmount)}</td>
+                            <td><span class="${badgeClass(status)}">${escapeHTML(status)}</span></td>
+                            <td>
+                                <div class="table-actions">
+                                    <button class="small-btn" onclick="viewOrder('${escapeHTML(number)}')">Receipt / Details</button>
+                                    ${status === "Pending" ? `
+                                        <button class="small-btn" onclick="updatePaymentStatus('${escapeHTML(number)}','Verified')">Verify</button>
+                                        <button class="small-btn" onclick="updatePaymentStatus('${escapeHTML(number)}','Rejected')">Reject</button>
+                                    ` : ""}
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                }).join("")
+                : `<tr><td colspan="6"><div class="empty-state"><strong>No payments yet</strong>Customer payments will appear here with their orders.</div></td></tr>`;
+        }
+
+        async function loadProducts() {
+            try {
+                const result = await apiRequest("/api/admin/products");
+                state.products = Array.isArray(result.products) ? result.products : [];
+                renderProducts();
+            } catch (error) {
+                $("productsTableBody").innerHTML = `
+                    <tr><td colspan="4"><div class="empty-state">
+                        <strong>Product API not connected</strong>
+                        The current server does not yet provide /api/admin/products.
+                        Product management needs backend routes before add/edit/delete can save.
+                    </div></td></tr>`;
+            }
+        }
+
+        function renderProducts() {
+            $("productsTableBody").innerHTML = state.products.length
+                ? state.products.map(product => `
+                    <tr>
+                        <td><strong>${escapeHTML(product.name ?? product.product_name ?? product.title)}</strong></td>
+                        <td>${escapeHTML(product.category ?? "—")}</td>
+                        <td>${money(product.price ?? product.unit_price)}</td>
+                        <td><div class="table-actions">
+                            <button class="small-btn" onclick="editProduct('${escapeHTML(product.id)}')">Edit</button>
+                            <button class="small-btn" onclick="deleteProduct('${escapeHTML(product.id)}')">Delete</button>
+                        </div></td>
+                    </tr>
+                `).join("")
+                : `<tr><td colspan="4"><div class="empty-state"><strong>No products returned</strong>Connect the product API to manage your catalogue.</div></td></tr>`;
+        }
+
+        $("addProductButton").addEventListener("click", () => {
+            $("productForm").reset();
+            $("productId").value = "";
+            $("productModalTitle").textContent = "Add Product";
+            $("productModal").classList.remove("hidden");
+        });
+
+        function editProduct(id) {
+            const product = state.products.find(p => String(p.id) === String(id));
+            if (!product) return;
+
+            $("productId").value = product.id;
+            $("productName").value = product.name ?? product.product_name ?? product.title ?? "";
+            $("productPrice").value = product.price ?? product.unit_price ?? "";
+            $("productCategory").value = product.category ?? "";
+            $("productImage").value = product.image ?? product.image_url ?? "";
+            $("productDescription").value = product.description ?? "";
+            $("productModalTitle").textContent = "Edit Product";
+            $("productModal").classList.remove("hidden");
+        }
+
+        async function deleteProduct(id) {
+            if (!confirm("Delete this product?")) return;
+
+            try {
+                await apiRequest("/api/admin/products/" + encodeURIComponent(id), {
+                    method: "DELETE"
+                });
+                showToast("Product deleted.");
+                await loadProducts();
+            } catch (error) {
+                showToast("Product delete failed: " + error.message);
+            }
+        }
+
+        $("productForm").addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const id = $("productId").value;
+            const payload = {
+                name: $("productName").value.trim(),
+                price: Number($("productPrice").value),
+                category: $("productCategory").value.trim(),
+                image: $("productImage").value.trim(),
+                description: $("productDescription").value.trim()
+            };
+
+            if (!payload.name || !Number.isFinite(payload.price) || payload.price <= 0) {
+                showToast("Enter a valid product name and price.");
+                return;
+            }
+
+            try {
+                await apiRequest(
+                    id ? "/api/admin/products/" + encodeURIComponent(id) : "/api/admin/products",
+                    {
+                        method: id ? "PUT" : "POST",
+                        body: JSON.stringify(payload)
+                    }
+                );
+
+                closeModal("productModal");
+                showToast("Product saved successfully.");
+                await loadProducts();
+            } catch (error) {
+                showToast("Product could not be saved: " + error.message);
+            }
+        });
+
+        async function loadCustomers() {
+            try {
+                const result = await apiRequest("/api/admin/customers");
+                state.customers = Array.isArray(result.customers) ? result.customers : [];
+
+                $("customersTableBody").innerHTML = state.customers.length
+                    ? state.customers.map(customer => `
+                        <tr>
+                            <td>${escapeHTML(customer.name ?? customer.full_name ?? customer.customer_name ?? "—")}</td>
+                            <td>${escapeHTML(customer.email ?? "—")}</td>
+                            <td>${escapeHTML(customer.phone ?? "—")}</td>
+                            <td>${escapeHTML(customer.created_at ?? customer.registered_at ?? "—")}</td>
+                        </tr>
+                    `).join("")
+                    : `<tr><td colspan="4"><div class="empty-state"><strong>No customer accounts found</strong></div></td></tr>`;
+            } catch (error) {
+                $("customersTableBody").innerHTML = `
+                    <tr><td colspan="4"><div class="empty-state">
+                        <strong>Customer API not connected</strong>
+                        Add customer registration and admin customer-list APIs to save and display registered accounts.
+                    </div></td></tr>`;
+            }
+        }
+
+        async function loadCustomRequests() {
+            try {
+                const result = await apiRequest("/api/admin/customized-orders");
+                state.customRequests = Array.isArray(result.requests)
+                    ? result.requests
+                    : Array.isArray(result.orders) ? result.orders : [];
+
+                renderCustomRequests();
+                updateSidebarCounts();
+            } catch (error) {
+                $("customTableBody").innerHTML = `
+                    <tr><td colspan="6"><div class="empty-state">
+                        <strong>Customized-order API not connected</strong>
+                        Requests need a dedicated database table and backend route before they can be listed here.
+                    </div></td></tr>`;
+                state.customRequests = [];
+                updateSidebarCounts();
+            }
+        }
+
+        function renderCustomRequests() {
+            $("customTableBody").innerHTML = state.customRequests.length
+                ? state.customRequests.map(request => `
+                    <tr>
+                        <td><strong>${escapeHTML(request.request_number ?? request.id ?? "—")}</strong></td>
+                        <td>${escapeHTML(request.customer_name ?? request.name ?? "—")}<br>
+                            <span class="muted">${escapeHTML(request.email ?? request.phone ?? "")}</span>
+                        </td>
+                        <td>${money(request.budget)}</td>
+                        <td>${escapeHTML(request.delivery_days ?? "—")}</td>
+                        <td><span class="${badgeClass(request.status ?? "New")}">${escapeHTML(request.status ?? "New")}</span></td>
+                        <td><button class="small-btn" onclick="openQuotation('${escapeHTML(request.id)}')">Quotation</button></td>
+                    </tr>
+                `).join("")
+                : `<tr><td colspan="6"><div class="empty-state"><strong>No customization requests</strong>New requests will appear here once the backend is connected.</div></td></tr>`;
+        }
+
+        function openQuotation(id) {
+            const request = state.customRequests.find(r => String(r.id) === String(id));
+            $("quotationForm").reset();
+            $("quotationRequestId").value = id;
+
+            if (request) {
+                $("quotationDays").value = request.delivery_days || "";
+                $("quotationNotes").value = "";
+            }
+
+            $("quotationModal").classList.remove("hidden");
+        }
+
+        $("quotationForm").addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const id = $("quotationRequestId").value;
+            const payload = {
+                quotationAmount: Number($("quotationAmount").value),
+                deliveryDays: Number($("quotationDays").value),
+                notes: $("quotationNotes").value.trim()
+            };
+
+            if (!id || payload.quotationAmount <= 0 ||
+                payload.deliveryDays <= 0 || !payload.notes) {
+                showToast("Complete all quotation details.");
+                return;
+            }
+
+            try {
+                await apiRequest(
+                    "/api/admin/customized-orders/" + encodeURIComponent(id) + "/quotation",
+                    {
+                        method: "POST",
+                        body: JSON.stringify(payload)
+                    }
+                );
+
+                closeModal("quotationModal");
+                showToast("Quotation submitted.");
+                await loadCustomRequests();
+            } catch (error) {
+                showToast("Quotation could not be sent: " + error.message);
+            }
+        });
+
+        /* NOTIFICATIONS */
+
+        function notificationIsRead(notification) {
+            const value = notification.is_read ?? notification.isRead ?? 0;
+
+            return value === true ||
+                value === 1 ||
+                value === "1" ||
+                value === "true";
+        }
+
+        function formatNotificationDate(value) {
+            if (!value) return "Date unavailable";
+
+            const date = new Date(value);
+
+            if (Number.isNaN(date.getTime())) {
+                return String(value);
+            }
+
+            return date.toLocaleString("en-PK", {
+                dateStyle: "medium",
+                timeStyle: "short"
+            });
+        }
+
+        async function loadNotifications(showErrors = true) {
+            try {
+                const result = await apiRequest("/api/admin/notifications");
+
+                state.notifications = Array.isArray(result.notifications)
+                    ? result.notifications
+                    : [];
+
+                // Use unreadCount from the server when it is provided.
+                // Otherwise calculate it from each notification's is_read value.
+                const calculatedUnread = state.notifications.filter(
+                    notification => !notificationIsRead(notification)
+                ).length;
+
+                state.unreadCount = Number.isFinite(Number(result.unreadCount))
+                    ? Number(result.unreadCount)
+                    : calculatedUnread;
+
+                renderNotifications();
+            } catch (error) {
+                $("notificationList").innerHTML = `
+                    <p class="muted">
+                        Could not load notifications. Please check the server and notification API.
+                    </p>`;
+
+                state.unreadCount = 0;
+                updateNotificationIndicator();
+
+                if (showErrors) {
+                    showToast("Notifications: " + error.message);
+                }
+            }
+        }
+
+        function updateNotificationIndicator() {
+            $("notificationDot").classList.toggle(
+                "hidden",
+                state.unreadCount <= 0
+            );
+
+            $("unreadCountLabel").textContent =
+                `${state.unreadCount} unread`;
+        }
+
+        function renderNotifications() {
+            const notifications = state.notifications;
+
+            updateNotificationIndicator();
+
+            $("notificationList").innerHTML = notifications.length
+                ? notifications.slice(0, 10).map(notification => {
+                    const isRead = notificationIsRead(notification);
+                    const id = notification.id;
+
+                    return `
+                        <div class="notification-item ${isRead ? "" : "unread"}">
+                            <strong>
+                                ${escapeHTML(
+                                    notification.title ??
+                                    notification.type ??
+                                    "Notification"
+                                )}
+                            </strong>
+
+                            <div>
+                                ${escapeHTML(
+                                    notification.message ??
+                                    notification.description ??
+                                    ""
+                                )}
+                            </div>
+
+                            <small>
+                                ${escapeHTML(
+                                    formatNotificationDate(notification.created_at ?? notification.createdAt)
+                                )}
+                            </small>
+
+                            <div class="notification-actions">
+                                <span class="muted">
+                                    ${isRead ? "Read" : "Unread"}
+                                </span>
+
+                                ${
+                                    !isRead && id != null
+                                        ? `<button
+                                                class="small-btn"
+                                                type="button"
+                                                onclick="markNotificationRead('${escapeHTML(id)}')">
+                                                Mark as Read
+                                           </button>`
+                                        : ""
+                                }
+                            </div>
+                        </div>
+                    `;
+                }).join("")
+                : `<p class="muted">No saved notifications yet.</p>`;
+        }
+
+        async function markNotificationRead(id) {
+            try {
+                await apiRequest(
+                    "/api/admin/notifications/" + encodeURIComponent(id) + "/read",
+                    { method: "POST" }
+                );
+
+                // Reload from the database so the displayed unread count stays accurate.
+                await loadNotifications(false);
+                showToast("Notification marked as read.");
+            } catch (error) {
+                showToast("Could not mark notification as read: " + error.message);
+            }
+        }
+
+        function startNotificationPolling() {
+            if (state.notificationTimer) {
+                clearInterval(state.notificationTimer);
+            }
+
+            // Check for new notifications every 30 seconds while logged in.
+            state.notificationTimer = setInterval(() => {
+                if (!$("adminApp").classList.contains("hidden")) {
+                    loadNotifications(false);
+                }
+            }, 30000);
+        }
+
+        $("orderSearch").addEventListener("input", renderOrders);
+        $("orderStatusFilter").addEventListener("change", renderOrders);
+        $("orderPaymentFilter").addEventListener("change", renderOrders);
+
+        $("refreshOrders").addEventListener("click", loadDashboardData);
+        $("refreshPayments").addEventListener("click", loadDashboardData);
+        $("refreshProducts").addEventListener("click", loadProducts);
+        $("refreshCustomers").addEventListener("click", loadCustomers);
+        $("refreshCustomRequests").addEventListener("click", loadCustomRequests);
+
+        function closeModal(id) {
+            $(id).classList.add("hidden");
+        }
+
+        document.querySelectorAll("[data-close]").forEach(button => {
+            button.addEventListener("click", () => closeModal(button.dataset.close));
+        });
+
+        document.querySelectorAll(".modal-backdrop").forEach(backdrop => {
+            backdrop.addEventListener("click", event => {
+                if (event.target === backdrop) {
+                    backdrop.classList.add("hidden");
+                }
+            });
+        });
+
+        // Check if the existing admin session is valid.
+        checkSession();
+    </script>
+</body>
+</html>
